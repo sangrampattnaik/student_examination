@@ -16,7 +16,7 @@ standard_choices = [
 ]
 
 class Standard(models.Model):
-    class_name = models.CharField(max_length=4,choices=standard_choices)
+    class_name = models.CharField(max_length=4,choices=standard_choices,unique=True)
 
     def __str__(self):
         return self.class_name

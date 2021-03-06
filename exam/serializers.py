@@ -11,10 +11,13 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = "__all__"
-        fields = "__all__"
 
 class QuestionsSerializer(serializers.ModelSerializer):
-    standard = StandardSerializer()
     class Meta:
         model = Questions
-        exclude = ['correct_answer']
+        exclude = ['correct_answer','standard']
+
+class QuestionsAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        exclude = ['standard']

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView, Response
 from rest_framework.viewsets import ModelViewSet
-
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from .serializers import (
     Questions,
     QuestionsAnswerSerializer,
@@ -14,25 +14,28 @@ from .serializers import (
 
 
 class StandardView(ModelViewSet):
+    permission_classes = (IsAdminUser,)
     queryset = Standard.objects.all()
     serializer_class = StandardSerializer
 
 
 class StudentView(ModelViewSet):
+    permission_classes = (IsAdminUser,)
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
 
 class TestExam(APIView):
-    def get(self, request, standard):
-        standards = Standard.objects.filter(class_name=standard).first()
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        standards = Standard.objects.filter(class_name=request.user.student_user.class_name).first()
         questions = Questions.objects.filter(standard=standards)
         all_questions = QuestionsSerializer(questions, many=True).data
-        return Response({"class": standard, "questions": all_questions})
+        return Response({"class": request.user.student_user.class_name, "questions": all_questions})
 
-    def post(self, request, standard):
+    def post(self, request):
         answers = request.data.get("answers")
-        questions = Questions.objects.filter(standard=standard)
+        questions = Questions.objects.filter(standard=request.user.student_user.class_name)
         total_questions = questions.count()
         question_attempt = 0
         wright_answer = 0
@@ -72,8 +75,9 @@ class TestExam(APIView):
 
 
 class QuestionAnswer(APIView):
-    def get(self, request, standard):
-        standards = Standard.objects.filter(class_name=standard).first()
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        standards = Standard.objects.filter(class_name=request.user.student_user.class_name).first()
         questions = Questions.objects.filter(standard=standards)
         all_questions = QuestionsAnswerSerializer(questions, many=True).data
-        return Response({"class": standard, "questions": all_questions})
+        return Response({"class": request.user.student_user.class_name, "questions": all_questions})

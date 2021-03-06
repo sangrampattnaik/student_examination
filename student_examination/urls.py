@@ -3,7 +3,7 @@ from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-
+from rest_framework_jwt.views import obtain_jwt_token,refresh_jwt_token,verify_jwt_token
 schema_view = get_schema_view(
     openapi.Info(
         title="Snippets API",
@@ -21,6 +21,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("exam.urls")),
+    path('login', obtain_jwt_token, name='token_obtain_pair'),
+    path('refresh', refresh_jwt_token, name='token_refresh'),
+    path('verify', verify_jwt_token, name='token_refresh'),
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
         schema_view.without_ui(cache_timeout=0),

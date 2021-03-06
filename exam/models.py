@@ -17,6 +17,7 @@ standard_choices = [
 
 
 class Standard(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="student_user")
     class_name = models.CharField(max_length=4, choices=standard_choices, unique=True)
 
     def __str__(self):

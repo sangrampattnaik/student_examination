@@ -1,13 +1,15 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Questions,Student,Standard
+from .models import Questions, Standard, Student
+
 
 @admin.register(Standard)
 class StudentAdmin(admin.ModelAdmin):
     list_display = [
         "class_name",
     ]
+
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
@@ -17,12 +19,13 @@ class StudentAdmin(admin.ModelAdmin):
         "date_of_birth",
     ]
 
+
 @admin.register(Questions)
 class QuestionsAdmin(admin.ModelAdmin):
     list_display = [
-        'question_number',
+        "question_number",
         "standard",
-        'question',
+        "question",
         "option1",
         "option2",
         "option3",

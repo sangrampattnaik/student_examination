@@ -31,3 +31,8 @@ class QuestionsAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Questions
         exclude = ["standard"]
+
+class QuestionCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = "__all__"

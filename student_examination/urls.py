@@ -6,9 +6,9 @@ from rest_framework import permissions
 from rest_framework_jwt.views import obtain_jwt_token,refresh_jwt_token,verify_jwt_token
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
+        title="Student MCQ Exam API",
         default_version="v1",
-        description="Test description",
+        description="Authenticated student can attend the exam by giving username and password. Correct answer rewarded with 4 marks and wrong answer deducted 1/4 marks",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),

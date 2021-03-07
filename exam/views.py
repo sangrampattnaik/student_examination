@@ -3,6 +3,7 @@ from rest_framework.views import APIView, Response
 from django.contrib.auth.models import User
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework import generics
 from .serializers import (
     Questions,
     QuestionsAnswerSerializer,
@@ -11,19 +12,15 @@ from .serializers import (
     StandardSerializer,
     Student,
     StudentSerializer,
+    QuestionCreateSerializer
 )
 
 
 class StandardView(ModelViewSet):
-    permission_classes = (IsAdminUser,)
     queryset = Standard.objects.all()
     serializer_class = StandardSerializer
 
 
-class StudentView(ModelViewSet):
-    permission_classes = (IsAdminUser,)
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
 
 class StudentRetriveUpdateDestroyAPIView(APIView):
     def get(self,request,student_id):
@@ -129,3 +126,21 @@ class QuestionAnswer(APIView):
         questions = Questions.objects.filter(standard=standards)
         all_questions = QuestionsAnswerSerializer(questions, many=True).data
         return Response({"class": request.user.student_user.class_name, "questions": all_questions})
+
+class QuestionListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = (IsAdminUser,)
+    queryset = Questions.objects.all()
+    serializer_class = QuestionCreateSerializer
+    
+    def get_queryset(self):
+        standard = self.request.GET.get("standard")
+        if standard:
+            return Questions.objects.filter(standard=standard)
+        return Questions.objects.all()
+        
+
+class QuestionRetriveUpdateDestroyAPIView(generics.RetrieveDestroyAPIView):
+    permission_classes = (IsAdminUser,)
+    queryset = Questions.objects.all()
+    serializer_class = QuestionCreateSerializer
+    lookup_field = "id"

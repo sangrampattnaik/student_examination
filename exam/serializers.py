@@ -1,17 +1,21 @@
 from rest_framework import serializers
 
-from .models import Questions, Standard, Student
+from .models import Questions, Standard, Student,User
 
 
 class StandardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Standard
         fields = "__all__"
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    standard = StandardSerializer()
-
+    user = UserSerializer()
     class Meta:
         model = Student
         fields = "__all__"

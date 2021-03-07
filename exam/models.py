@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+import django
 
 # Create your models here.
 standard_choices = [
@@ -17,7 +18,6 @@ standard_choices = [
 
 
 class Standard(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="student_user")
     class_name = models.CharField(max_length=4, choices=standard_choices, unique=True)
 
     def __str__(self):
@@ -25,10 +25,9 @@ class Standard(models.Model):
 
 
 class Student(models.Model):
-    # user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='student_user')
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='student_user')
     standard = models.ForeignKey(Standard, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=40)
-    date_of_birth = models.DateField()
 
 
 class Questions(models.Model):

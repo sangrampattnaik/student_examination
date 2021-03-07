@@ -16,7 +16,6 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = [
         "full_name",
         "standard",
-        "date_of_birth",
     ]
 
 

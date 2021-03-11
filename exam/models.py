@@ -1,6 +1,6 @@
+import django
 from django.contrib.auth.models import User
 from django.db import models
-import django
 
 # Create your models here.
 standard_choices = [
@@ -29,6 +29,9 @@ class Student(models.Model):
     standard = models.ForeignKey(Standard, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=40)
 
+    def username(self):
+        return self.user.username
+
 
 class Questions(models.Model):
     standard = models.ForeignKey(Standard, on_delete=models.CASCADE)
@@ -39,6 +42,9 @@ class Questions(models.Model):
     option3 = models.CharField(max_length=100)
     option4 = models.CharField(max_length=100)
     correct_answer = models.CharField(max_length=100)
+
+    def standard_name(self):
+        return self.standard.class_name
 
     def student_class(self):
         return self.student.standard

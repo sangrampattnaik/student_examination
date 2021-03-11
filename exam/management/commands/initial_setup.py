@@ -1,6 +1,8 @@
-from exam.models import Standard
-from django.core.management.base import BaseCommand
 import django
+from django.core.management.base import BaseCommand
+
+from exam.models import Standard
+
 
 class Command(BaseCommand):
     help = 'create standard from 1 to 10'

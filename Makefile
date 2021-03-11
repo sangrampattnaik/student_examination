@@ -1,12 +1,12 @@
 python=python
 manage=./manage.py
 
+runserver:
+	@$(python) $(manage) runserver
+
 intial-setup:
 	@$(python) $(manage) initial_setup
 
-runserver:
-	@$(python) $(manage) initial_setup
-	@$(python) $(manage) runserver
 
 migrate:
 	@$(python) $(manage) makemigrations

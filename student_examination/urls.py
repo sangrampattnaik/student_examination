@@ -1,40 +1,15 @@
 from django.contrib import admin
-from django.urls import include, path, re_path
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
-from rest_framework_jwt.views import obtain_jwt_token,refresh_jwt_token,verify_jwt_token
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Student MCQ Exam API",
-        default_version="v1",
-        description="Authenticated student can attend the exam by giving username and password. Correct answer rewarded with 4 marks and wrong answer deducted 1/4 marks",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
+from django.urls import include, path
+from ninja import NinjaAPI
+from ninja_api.api import router
+from ninja_api.api2 import router as student_router
+api = NinjaAPI()
+api.add_router("",router)
+api.add_router("",student_router)
+
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("exam.urls")),
-    path('login', obtain_jwt_token, name='token_obtain_pair'),
-    path('refresh', refresh_jwt_token, name='token_refresh'),
-    path('verify', verify_jwt_token, name='token_refresh'),
-    re_path(
-        r"^swagger(?P<format>\.json|\.yaml)$",
-        schema_view.without_ui(cache_timeout=0),
-        name="schema-json",
-    ),
-    re_path(
-        r"^swagger/$",
-        schema_view.with_ui("swagger", cache_timeout=0),
-        name="schema-swagger-ui",
-    ),
-    re_path(
-        r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
-    ),
+    path("", api.urls),
 ]
